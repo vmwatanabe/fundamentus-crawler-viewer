@@ -1,11 +1,29 @@
 <script>
+  import { createEventDispatcher } from "svelte";
+  import Grid from "gridjs-svelte";
+  import clickOutside from "../actions/click-outside.action";
+  import { getColumns, getData } from "./stock-compare.helpers";
+
   export let selectedStocks;
+
+  $: columns = getColumns(selectedStocks);
+  $: data = getData(selectedStocks);
+
+  const dispatch = createEventDispatcher();
+
+  const handleClickOutside = () => {
+    dispatch("onClose");
+  };
 </script>
 
 <div id="stock-compare">
-  <div class="stock-compare-content">
+  <div
+    class="stock-compare-content"
+    use:clickOutside
+    on:clickOutside={handleClickOutside}
+  >
     <h1 class="title">Comparar</h1>
-    <div>{selectedStocks?.join(", ")}</div>
+    <Grid {data} {columns} sort search fixedHeader />
   </div>
 </div>
 
@@ -26,6 +44,7 @@
     background: rgba(0, 0, 0, 0.3);
     width: 100vw;
     height: 100vh;
+    z-index: -1;
   }
 
   .title {
@@ -39,5 +58,6 @@
     z-index: 1;
     padding: 1rem;
     border-radius: 4px;
+    overflow: auto;
   }
 </style>

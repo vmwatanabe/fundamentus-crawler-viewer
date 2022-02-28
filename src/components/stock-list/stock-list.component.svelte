@@ -45,7 +45,10 @@
     </div>
   {/if}
   {#if compareVisibility}
-    <StockCompare bind:selectedStocks />
+    <StockCompare
+      bind:selectedStocks
+      on:onClose={() => (compareVisibility = false)}
+    />
   {/if}
 </div>
 
