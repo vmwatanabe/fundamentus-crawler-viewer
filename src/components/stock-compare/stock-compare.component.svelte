@@ -60,4 +60,8 @@
     border-radius: 4px;
     overflow: auto;
   }
+
+  :global(.gridjs-td[data-featured="true"]) {
+    background: #81c784;
+  }
 </style>
