@@ -26,4 +26,8 @@
     margin: auto;
     z-index: 1;
   }
+
+  :global(body) {
+    padding: 0;
+  }
 </style>
