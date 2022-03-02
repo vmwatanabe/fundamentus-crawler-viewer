@@ -64,4 +64,8 @@
   :global(.gridjs-td[data-featured="true"]) {
     background: #81c784;
   }
+
+  :global(.gridjs-td[data-alert="red"]) {
+    background: #f44336;
+  }
 </style>

@@ -1,33 +1,64 @@
 import {
+  getAlertByLessThanOrEqualZero,
+  getAlertByLessThanZero,
+  getFeaturedByHigherValue,
+  getFeaturedByLowerButPositive,
+} from "../../rules";
+import {
   formatMoney,
   formatNumber,
   formatPercentage,
 } from "../stock-list/stock-list.helpers";
 
 const rows = [
-  { factor: "lower", prop: "magicRanking", name: "Magic ranking" },
+  {
+    prop: "magicRanking",
+    name: "Magic ranking",
+    feature: getFeaturedByLowerButPositive,
+  },
   { prop: "setor", name: "Setor" },
   { prop: "industria", name: "Indústria" },
-  { factor: "lower", prop: "pByL", name: "P/L", formatter: formatNumber },
   {
-    factor: "higher",
+    prop: "pByL",
+    name: "P/L",
+    formatter: formatNumber,
+    alert: getAlertByLessThanZero,
+    feature: getFeaturedByLowerButPositive,
+  },
+  {
     prop: "dividendYield",
     name: "Div.Yield",
     formatter: formatPercentage,
+    alert: getAlertByLessThanOrEqualZero,
+    feature: getFeaturedByHigherValue,
   },
-  { factor: "higher", prop: "roic", name: "ROIC", formatter: formatPercentage },
-  { factor: "higher", prop: "roe", name: "ROE", formatter: formatPercentage },
   {
-    factor: "higher",
+    prop: "roic",
+    name: "ROIC",
+    formatter: formatPercentage,
+    alert: getAlertByLessThanZero,
+    feature: getFeaturedByHigherValue,
+  },
+  {
+    prop: "roe",
+    name: "ROE",
+    formatter: formatPercentage,
+    alert: getAlertByLessThanZero,
+    feature: getFeaturedByHigherValue,
+  },
+  {
     prop: "patrimonioLiquido",
     name: "Patri. Líq",
     formatter: formatMoney,
+    alert: getAlertByLessThanZero,
+    feature: getFeaturedByHigherValue,
   },
   {
-    factor: "lower",
     prop: "dividaBrutaByPatrimonio",
     name: "Dív.Brut/ Patrim.",
     formatter: formatNumber,
+    alert: getAlertByLessThanZero,
+    feature: getFeaturedByLowerButPositive,
   },
 ];
 
@@ -50,19 +81,24 @@ export const getColumns = (stocks) => {
       attributes: (cell, row) => {
         if (!(cell !== null && row !== null)) return;
 
-        const rowFactor = rows.find(
-          (elem) => elem.name === row.cells[0].data
-        ).factor;
+        const rowItem = rows.find((elem) => elem.name === row.cells[0].data);
 
-        if (!rowFactor) return;
+        const alert = rowItem.alert?.(cell);
 
-        const method = rowFactor === "lower" ? Math.min : Math.max;
+        if (alert) {
+          return {
+            "data-alert": alert,
+          };
+        }
 
-        const betterValue = method(
-          ...row.cells.slice(1).map((elem) => elem.data)
+        if (!rowItem.feature) return;
+
+        const isFeatured = rowItem.feature(
+          row.cells.slice(1).map((elem) => elem.data),
+          cell
         );
 
-        if (betterValue !== cell) return;
+        if (!isFeatured) return;
 
         return {
           "data-featured": "true",
