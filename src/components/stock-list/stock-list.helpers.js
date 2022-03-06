@@ -31,6 +31,10 @@ export const getColumns = () => {
       name: "Papel",
     },
     {
+      id: "nomeEmpresaLongo",
+      name: "Nome Empresa",
+    },
+    {
       id: "setor",
       name: "Setor",
     },
