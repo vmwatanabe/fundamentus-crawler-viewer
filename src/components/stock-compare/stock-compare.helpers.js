@@ -17,7 +17,7 @@ const rows = [
     feature: getFeaturedByLowerButPositive,
   },
   { prop: "setor", name: "Setor" },
-  { prop: "industria", name: "Indústria" },
+  { prop: "subsetor", name: "subSetor" },
   {
     prop: "pByL",
     name: "P/L",

@@ -31,7 +31,7 @@ export const getColumns = () => {
       name: "Papel",
     },
     {
-      id: "nomeEmpresaLongo",
+      id: "empresa",
       name: "Nome Empresa",
     },
     {
@@ -39,8 +39,8 @@ export const getColumns = () => {
       name: "Setor",
     },
     {
-      id: "industria",
-      name: "Indústria",
+      id: "subsetor",
+      name: "Subsetor",
     },
     {
       id: "magicRanking",
@@ -57,6 +57,11 @@ export const getColumns = () => {
     {
       id: "cotacao",
       name: "Cotação",
+      formatter: (value) => formatMoney(value),
+    },
+    {
+      id: "cotacaoToTop30",
+      name: "Cotação para top 30",
       formatter: (value) => formatMoney(value),
     },
     {
